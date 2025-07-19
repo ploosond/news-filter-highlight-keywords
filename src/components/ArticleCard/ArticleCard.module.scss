@@ -1,0 +1,14 @@
+@use "../../styles/variables" as *;
+
+.article-published-date {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+}
+.article-link {
+  display: flex;
+  align-items: center;
+  gap: 3px;
+  text-decoration: none;
+  margin-top: 5px;
+}
