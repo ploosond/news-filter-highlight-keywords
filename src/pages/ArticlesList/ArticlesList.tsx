@@ -14,6 +14,8 @@ import {
   selectFilteredArticles,
   setSearchTerm,
 } from "../../features/articles/articlesSlice";
+import { useEffect, useState } from "react";
+import useDebounce from "../../hooks/useDebounce";
 
 function ArticlesList() {
   const dispatch = useAppDispatch();
@@ -21,21 +23,33 @@ function ArticlesList() {
   const searchTerm = useAppSelector((state) => state.articles.searchTerm);
   const filteredArticles = useAppSelector(selectFilteredArticles);
 
+  const [inputValue, setInputValue] = useState(searchTerm);
+  const debouncedSearchTerm = useDebounce(inputValue, 500);
+
+  useEffect(() => {
+    dispatch(setSearchTerm(debouncedSearchTerm));
+  }, [debouncedSearchTerm, dispatch]);
+
   if (loading === "pending") {
     return <div>Loading...</div>;
   }
 
   return (
-    <Container className={styles["home-container"]}>
+    <Container maxWidth="xl" className={styles["home-container"]}>
       {/* Filter input */}
       <Box mb={4}>
         <Typography variant="h6" sx={{ fontWeight: 600, fontSize: "0.85rem" }}>
           Filter by keywords
         </Typography>
         <TextField
-          onChange={(e) => dispatch(setSearchTerm(e.target.value))}
-          value={searchTerm}
-          sx={{ width: "450px" }}
+          sx={{
+            width: {
+              xs: "100%",
+              md: "50%",
+            },
+          }}
+          onChange={(e) => setInputValue(e.target.value)}
+          value={inputValue}
           InputProps={{
             startAdornment: (
               <InputAdornment position="start">

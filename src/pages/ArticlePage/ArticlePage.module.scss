@@ -5,18 +5,14 @@
   height: 20vh;
   background-size: cover;
   background-position: center;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
 
   .article-container {
-    width: 100%;
+    width: 90%;
     position: absolute;
-    top: 160%;
+    top: 120%;
     left: 50%;
     transform: translate(-50%, -50%);
-    padding-top: 20px;
-    padding-bottom: 20px;
+    padding: 20px 15px;
 
     .article-card {
       display: flex;
@@ -34,4 +30,12 @@
     text-decoration: none;
     margin-top: 15px;
   }
+}
+
+.article-link {
+  display: flex;
+  align-items: center;
+  gap: 3px;
+  text-decoration: none;
+  margin-top: 15px;
 }

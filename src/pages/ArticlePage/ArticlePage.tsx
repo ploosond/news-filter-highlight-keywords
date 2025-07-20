@@ -16,7 +16,15 @@ function ArticlePage() {
   }
 
   if (!article) {
-    return <div>Article not found.</div>;
+    return (
+      <div>
+        <h1>Article not found.</h1>
+        <Link className={styles["article-link"]} to="/">
+          <KeyboardBackspaceIcon fontSize="small" />
+          <Typography sx={{ fontSize: "0.75rem" }}>Back to homepage</Typography>
+        </Link>
+      </div>
+    );
   }
 
   return (
