@@ -11,12 +11,12 @@ import ArrowRightAltIcon from "@mui/icons-material/ArrowRightAlt";
 import toDateString from "../../utils/toDateString";
 import truncateText from "../../utils/truncateText";
 import styles from "./ArticleCard.module.scss";
-import type { ArticleWithId } from "../../types/article.types";
 import { Link } from "react-router";
 import HighlightedText from "../HighlightedText/HighlightedText";
+import type { Article } from "../../types/article.types";
 
 interface ArticleCardProps {
-  article: ArticleWithId;
+  article: Article;
   searchTerm?: string;
 }
 
@@ -32,7 +32,7 @@ function ArticleCard({ article, searchTerm }: ArticleCardProps) {
       >
         <CardMedia
           component="img"
-          src={article.urlToImage}
+          src={article.image}
           alt={article.title}
           height={150}
           sx={{

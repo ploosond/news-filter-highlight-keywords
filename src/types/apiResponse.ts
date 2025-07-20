@@ -1,6 +1,6 @@
 import type { Article } from "./article.types";
 
 export interface ApiResponse {
-  status: string;
+  totalArticles: number;
   articles: Array<Article>;
 }

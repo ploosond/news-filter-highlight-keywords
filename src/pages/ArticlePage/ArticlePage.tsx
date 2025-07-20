@@ -30,7 +30,7 @@ function ArticlePage() {
   return (
     <Box
       className={styles["image-background"]}
-      sx={{ backgroundImage: `url(${article.urlToImage})` }}
+      sx={{ backgroundImage: `url(${article.image})` }}
     >
       <Container className={styles["article-container"]}>
         <Card>
@@ -39,6 +39,7 @@ function ArticlePage() {
               {article.title}
             </Typography>
             <Typography variant="body2">{article.description}</Typography>
+            <Typography variant="body2">{article.content}</Typography>
           </CardContent>
         </Card>
         <Link className={styles["article-link"]} to="/">

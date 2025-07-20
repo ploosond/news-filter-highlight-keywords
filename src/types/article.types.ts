@@ -1,12 +1,10 @@
 export interface Article {
+  id: string;
   title: string;
   description: string;
+  content: string;
   publishedAt: string;
   author: string;
-  urlToImage: string;
+  image: string;
   url: string;
-}
-
-export interface ArticleWithId extends Article {
-  id: string;
 }
