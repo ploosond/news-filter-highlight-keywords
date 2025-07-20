@@ -8,16 +8,18 @@ function HighlightedText({ text, keyword }: HighlightedText) {
     return <>{text}</>;
   }
 
-  const regex = new RegExp(
-    `(${keyword.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")})`,
-    "gi"
-  );
+  const words = keyword
+    .trim()
+    .split(/\s+/)
+    .map((w) => w.replace(/[.*+?^${}()|[\]\\]/g, "\\$&"));
+
+  const regex = new RegExp(`(${words.join("|")})`, "gi");
   const parts = text.split(regex);
 
   return (
     <>
       {parts.map((part, index) =>
-        part.toLowerCase() === keyword.toLowerCase() ? (
+        words.some((word) => part.toLowerCase() === word.toLowerCase()) ? (
           <mark key={index} style={{ backgroundColor: "yellow" }}>
             {part}
           </mark>
