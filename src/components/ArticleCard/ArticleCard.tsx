@@ -13,12 +13,14 @@ import truncateText from "../../utils/truncateText";
 import styles from "./ArticleCard.module.scss";
 import type { ArticleWithId } from "../../types/article.types";
 import { Link } from "react-router";
+import HighlightedText from "../HighlightedText/HighlightedText";
 
 interface ArticleCardProps {
   article: ArticleWithId;
+  searchTerm?: string;
 }
 
-function ArticleCard({ article }: ArticleCardProps) {
+function ArticleCard({ article, searchTerm }: ArticleCardProps) {
   return (
     <Grid size={{ xs: 12, sm: 6, md: 3 }} key={article.publishedAt}>
       <Card
@@ -68,7 +70,10 @@ function ArticleCard({ article }: ArticleCardProps) {
               }}
               variant="h6"
             >
-              {truncateText(article.title, 100)}
+              <HighlightedText
+                text={truncateText(article.title, 100)}
+                keyword={searchTerm || ""}
+              />
             </Typography>
             <Typography
               className={styles["article-description"]}
@@ -81,7 +86,10 @@ function ArticleCard({ article }: ArticleCardProps) {
               }}
               variant="body2"
             >
-              {truncateText(article.description, 100) + "..."}
+              <HighlightedText
+                text={truncateText(article.description, 100) + "..."}
+                keyword={searchTerm || ""}
+              />
             </Typography>
           </Box>
           <Link

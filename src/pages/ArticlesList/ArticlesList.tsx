@@ -9,17 +9,20 @@ import {
 import SearchIcon from "@mui/icons-material/Search";
 import styles from "./ArticlesList.module.scss";
 import ArticleCard from "../../components/ArticleCard/ArticleCard";
-import { useAppSelector } from "../../app/hooks";
+import { useAppDispatch, useAppSelector } from "../../app/hooks";
+import {
+  selectFilteredArticles,
+  setSearchTerm,
+} from "../../features/articles/articlesSlice";
 
 function ArticlesList() {
-  const { articles, loading } = useAppSelector((state) => state.articles);
+  const dispatch = useAppDispatch();
+  const loading = useAppSelector((state) => state.articles.loading);
+  const searchTerm = useAppSelector((state) => state.articles.searchTerm);
+  const filteredArticles = useAppSelector(selectFilteredArticles);
 
   if (loading === "pending") {
     return <div>Loading...</div>;
-  }
-
-  if (!articles) {
-    return <div>Article not found.</div>;
   }
 
   return (
@@ -30,6 +33,8 @@ function ArticlesList() {
           Filter by keywords
         </Typography>
         <TextField
+          onChange={(e) => dispatch(setSearchTerm(e.target.value))}
+          value={searchTerm}
           sx={{ width: "450px" }}
           InputProps={{
             startAdornment: (
@@ -51,14 +56,18 @@ function ArticlesList() {
             borderBottom: "1px solid #eaeaea",
           }}
         >
-          Total articles: {articles.length}
+          Total articles: {filteredArticles.length}
         </Typography>
       </Box>
 
       {/* Articles list */}
       <Grid container spacing={3}>
-        {articles.map((article) => (
-          <ArticleCard key={article.id} article={article} />
+        {filteredArticles.map((article) => (
+          <ArticleCard
+            key={article.id}
+            article={article}
+            searchTerm={searchTerm}
+          />
         ))}
       </Grid>
     </Container>
