@@ -1,43 +1,31 @@
-import { Route, BrowserRouter as Router, Routes } from "react-router";
-import "./styles/main.scss";
-import { useEffect, useState } from "react";
-import type { Article, ArticleWithId } from "./types/article.types";
+import { Route, Routes } from "react-router";
+import { useEffect } from "react";
 import ArticlePage from "./pages/ArticlePage/ArticlePage";
-import allArticles from "./services/allArticles";
 import ArticlesList from "./pages/ArticlesList/ArticlesList";
-import { v4 as uuidv4 } from "uuid";
+import { useAppDispatch, useAppSelector } from "./app/hooks";
+import { initializeArticles } from "./features/articles/articlesSlice";
+import "./styles/main.scss";
 
 function App() {
-  const [articles, setArticles] = useState<Array<ArticleWithId>>([]);
+  const dispatch = useAppDispatch();
+  const { loading } = useAppSelector((state) => state.articles);
 
   useEffect(() => {
-    allArticles()
-      .then((data) => {
-        const articlesWithIds = data.articles.map((article: Article) => {
-          return {
-            id: uuidv4(),
-            ...article,
-          };
-        });
+    if (loading === "idle") {
+      dispatch(initializeArticles());
+    }
+  }, [dispatch, loading]);
 
-        setArticles(articlesWithIds);
-      })
-      .catch((error) => console.error(error));
-  }, []);
-
-  console.log(articles[0]);
+  if (loading === "pending") {
+    return <div>Loading...</div>;
+  }
 
   return (
     <>
-      <Router>
-        <Routes>
-          <Route path="/" element={<ArticlesList articles={articles} />} />
-          <Route
-            path="/articles/:id"
-            element={<ArticlePage articles={articles} />}
-          />
-        </Routes>
-      </Router>
+      <Routes>
+        <Route path="/" element={<ArticlesList />} />
+        <Route path="/articles/:id" element={<ArticlePage />} />
+      </Routes>
     </>
   );
 }

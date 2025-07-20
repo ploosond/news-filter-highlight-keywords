@@ -9,13 +9,19 @@ import {
 import SearchIcon from "@mui/icons-material/Search";
 import styles from "./ArticlesList.module.scss";
 import ArticleCard from "../../components/ArticleCard/ArticleCard";
-import type { ArticleWithId } from "../../types/article.types";
+import { useAppSelector } from "../../app/hooks";
 
-interface ArticlesListProps {
-  articles: Array<ArticleWithId>;
-}
+function ArticlesList() {
+  const { articles, loading } = useAppSelector((state) => state.articles);
 
-function ArticlesList({ articles }: ArticlesListProps) {
+  if (loading === "pending") {
+    return <div>Loading...</div>;
+  }
+
+  if (!articles) {
+    return <div>Article not found.</div>;
+  }
+
   return (
     <Container className={styles["home-container"]}>
       {/* Filter input */}

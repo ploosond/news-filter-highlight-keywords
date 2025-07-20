@@ -1,30 +1,36 @@
 import { Link, useParams } from "react-router";
-import type { ArticleWithId } from "../../types/article.types";
 import KeyboardBackspaceIcon from "@mui/icons-material/KeyboardBackspace";
 import styles from "./ArticlePage.module.scss";
 import { Box, Card, CardContent, Container, Typography } from "@mui/material";
+import { useAppSelector } from "../../app/hooks";
 
-interface ArticlePageProps {
-  articles: Array<ArticleWithId>;
-}
-
-function ArticlePage({ articles }: ArticlePageProps) {
+function ArticlePage() {
   const { id } = useParams<{ id: string }>();
 
-  const article = articles.find((article: ArticleWithId) => article.id === id);
+  const { articles, loading } = useAppSelector((state) => state.articles);
+
+  const article = articles.find((article) => article.id === id);
+
+  if (loading === "pending") {
+    return <div>Loading...</div>;
+  }
+
+  if (!article) {
+    return <div>Article not found.</div>;
+  }
 
   return (
     <Box
       className={styles["image-background"]}
-      sx={{ backgroundImage: `url(${article?.urlToImage})` }}
+      sx={{ backgroundImage: `url(${article.urlToImage})` }}
     >
       <Container className={styles["article-container"]}>
         <Card>
           <CardContent className={styles["article-card"]}>
             <Typography className={styles["article-title"]} variant="h6">
-              {article?.title}
+              {article.title}
             </Typography>
-            <Typography variant="body2">{article?.description}</Typography>
+            <Typography variant="body2">{article.description}</Typography>
             <Typography variant="body2">
               Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quos,
               aliquam itaque esse laboriosam laudantium rerum ut! Expedita,
